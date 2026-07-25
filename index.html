@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Le Ballon d'Or du peuple</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #ffd700;
+    --gold-light: #fff3b0;
+    --gold-dark: #b8860b;
+    --purple: #2e0854;
+    --purple-light: #6c1cd1;
+    --electric-blue: #00e0ff;
+    --bg-dark: #0b0620;
+    --text-light: #f5f0ff;
+    --font-impact: 'Anton', 'Arial Narrow', sans-serif;
+    --font-body: 'Poppins', 'Segoe UI', sans-serif;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html, body {
+    height: 100%;
+  }
+
+  body {
+    font-family: var(--font-body);
+    color: var(--text-light);
+    background:
+      radial-gradient(circle at 20% 0%, rgba(108, 28, 209, 0.35), transparent 55%),
+      radial-gradient(circle at 85% 100%, rgba(255, 215, 0, 0.12), transparent 50%),
+      linear-gradient(160deg, #0b0620 0%, #170a3a 55%, #0b0620 100%);
+    background-size: 200% 200%;
+    animation: bgShift 18s ease infinite;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  @keyframes bgShift {
+    0%, 100% { background-position: 0% 0%; }
+    50% { background-position: 100% 100%; }
+  }
+
+  button {
+    font-family: inherit;
+    border: none;
+    cursor: pointer;
+  }
+
+  img {
+    max-width: 100%;
+    display: block;
+  }
+
+  /* ---------- Top bar ---------- */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    background: rgba(11, 6, 32, 0.65);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(255, 215, 0, 0.15);
+  }
+
+  .sound-toggle {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 215, 0, 0.25);
+    color: var(--text-light);
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease, background 0.2s ease;
+  }
+
+  .sound-toggle:hover {
+    transform: translateY(-50%) scale(1.08);
+    background: rgba(255, 215, 0, 0.15);
+  }
+
+  .topbar-title {
+    font-family: var(--font-impact);
+    letter-spacing: 1px;
+    font-size: clamp(1.1rem, 3vw, 1.5rem);
+    background: linear-gradient(90deg, var(--gold-light), var(--gold), var(--gold-dark));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  main {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem 1.2rem 4rem;
+    min-height: calc(100vh - 68px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  /* ---------- Intro screen ---------- */
+  .intro-photo-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    grid-auto-rows: minmax(110px, 1fr);
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .intro-photo-bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    filter: grayscale(0.55) brightness(0.5);
+    opacity: 0.6;
+  }
+
+  .intro-photo-bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 50% 38%, rgba(11, 6, 32, 0.35), rgba(11, 6, 32, 0.93) 72%),
+      linear-gradient(180deg, rgba(11, 6, 32, 0.45), rgba(11, 6, 32, 0.96));
+  }
+
+  .intro-screen {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2rem;
+    animation: fadeInUp 0.7s ease both;
+  }
+
+  .intro-trophy {
+    font-size: clamp(3.5rem, 10vw, 5.5rem);
+    filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.6));
+  }
+
+  .intro-title {
+    font-family: var(--font-impact);
+    font-size: clamp(2.6rem, 9vw, 5rem);
+    line-height: 0.95;
+    letter-spacing: 1px;
+    background: linear-gradient(90deg, var(--gold-light), var(--gold) 40%, var(--electric-blue));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 0 40px rgba(255, 215, 0, 0.25);
+  }
+
+  .intro-subtitle {
+    max-width: 560px;
+    font-size: clamp(1rem, 2.4vw, 1.2rem);
+    color: var(--text-light);
+    opacity: 0.9;
+  }
+
+  .intro-rules {
+    max-width: 560px;
+    font-size: 0.95rem;
+    color: #cfc3ee;
+    background: rgba(108, 28, 209, 0.18);
+    border: 1px solid rgba(255, 215, 0, 0.25);
+    border-radius: 14px;
+    padding: 1rem 1.4rem;
+  }
+
+  .btn-start,
+  .btn-replay {
+    margin-top: 0.5rem;
+    background: linear-gradient(90deg, var(--gold-dark), var(--gold), var(--gold-light));
+    color: #2a1400;
+    font-family: var(--font-impact);
+    letter-spacing: 2px;
+    font-size: 1.2rem;
+    padding: 1rem 3rem;
+    border-radius: 50px;
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.5), 0 8px 20px rgba(0, 0, 0, 0.4);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .btn-start:hover,
+  .btn-replay:hover {
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 0 0 40px rgba(255, 215, 0, 0.8), 0 10px 25px rgba(0, 0, 0, 0.4);
+  }
+
+  /* ---------- Loading screen ---------- */
+  .loading-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.4rem;
+  }
+
+  .loading-spinner {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    border: 5px solid rgba(255, 215, 0, 0.2);
+    border-top-color: var(--gold);
+    animation: spin 0.9s linear infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* ---------- Progress bar ---------- */
+  .progress-wrap {
+    width: 100%;
+    max-width: 640px;
+    margin-bottom: 2.2rem;
+  }
+
+  .progress-label {
+    font-family: var(--font-impact);
+    letter-spacing: 2px;
+    font-size: clamp(1.1rem, 3vw, 1.5rem);
+    color: var(--gold-light);
+    margin-bottom: 0.6rem;
+  }
+
+  .progress-bar {
+    width: 100%;
+    height: 12px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.08);
+    overflow: hidden;
+    border: 1px solid rgba(255, 215, 0, 0.25);
+  }
+
+  .progress-fill {
+    height: 100%;
+    border-radius: 20px;
+    background: linear-gradient(90deg, var(--gold-dark), var(--gold), var(--electric-blue));
+    background-size: 200% 100%;
+    animation: fillShimmer 2s linear infinite;
+    transition: width 0.5s ease;
+  }
+
+  @keyframes fillShimmer {
+    from { background-position: 0% 0; }
+    to { background-position: 200% 0; }
+  }
+
+  /* ---------- Duel stage ---------- */
+  .duel-stage {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+  }
+
+  .stage-enter {
+    animation: stageEnter 0.4s ease both;
+  }
+
+  @keyframes stageEnter {
+    from { opacity: 0; transform: translateX(50px) scale(0.95); }
+    to { opacity: 1; transform: translateX(0) scale(1); }
+  }
+
+  .stage-exit {
+    animation: stageExit 0.28s ease forwards;
+  }
+
+  @keyframes stageExit {
+    to { opacity: 0; transform: translateX(-50px) scale(0.95); }
+  }
+
+  .duel-card {
+    flex: 1;
+    max-width: 280px;
+    background: linear-gradient(160deg, #1c1246, #2c1259);
+    border: 2px solid rgba(255, 215, 0, 0.25);
+    border-radius: 20px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.7rem;
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  }
+
+  .duel-card:hover {
+    transform: translateY(-8px) scale(1.03);
+    border-color: var(--gold);
+    box-shadow: 0 0 35px rgba(255, 215, 0, 0.45);
+  }
+
+  .duel-card:focus-visible {
+    outline: 3px solid var(--electric-blue);
+    outline-offset: 3px;
+  }
+
+  .card-photo-wrap {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #100a28;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .card-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+  }
+
+  .card-name {
+    font-family: var(--font-impact);
+    font-size: clamp(1rem, 2.4vw, 1.3rem);
+    letter-spacing: 0.5px;
+    color: #fff;
+  }
+
+  .card-club {
+    font-size: 0.85rem;
+    color: var(--gold-light);
+    opacity: 0.85;
+  }
+
+  .duel-card.is-chosen {
+    animation: pulseChosen 0.55s ease forwards;
+    border-color: var(--gold);
+    z-index: 2;
+  }
+
+  @keyframes pulseChosen {
+    0% { transform: scale(1); }
+    45% { transform: scale(1.12); box-shadow: 0 0 45px rgba(255, 215, 0, 0.85); }
+    100% { transform: scale(1.05); box-shadow: 0 0 25px rgba(255, 215, 0, 0.6); }
+  }
+
+  .duel-card.is-defeated {
+    animation: fadeDefeat 0.55s ease forwards;
+  }
+
+  @keyframes fadeDefeat {
+    to { opacity: 0.2; transform: scale(0.88); filter: grayscale(1); }
+  }
+
+  .vs-badge {
+    font-family: var(--font-impact);
+    font-size: clamp(1.6rem, 5vw, 2.4rem);
+    letter-spacing: 2px;
+    background: linear-gradient(180deg, var(--gold-light), var(--gold-dark));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+    flex-shrink: 0;
+    animation: vsPulse 1.6s ease-in-out infinite;
+  }
+
+  @keyframes vsPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+  }
+
+  /* ---------- Already voted screen ---------- */
+  .final-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    position: relative;
+    width: 100%;
+  }
+
+  .final-title {
+    font-family: var(--font-impact);
+    font-size: clamp(1.8rem, 6vw, 2.8rem);
+    letter-spacing: 1px;
+    background: linear-gradient(90deg, var(--gold-light), var(--gold));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .champion-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    background: linear-gradient(160deg, #241255, #3a1470);
+    border: 2px solid var(--gold);
+    border-radius: 24px;
+    padding: 1.5rem;
+    width: 100%;
+    max-width: 320px;
+    box-shadow: 0 0 50px rgba(255, 215, 0, 0.35);
+  }
+
+  .champion-photo-wrap {
+    width: 200px;
+    max-width: 60vw;
+    aspect-ratio: 1 / 1;
+    border-radius: 18px;
+    overflow: hidden;
+    border: 2px solid rgba(255, 215, 0, 0.4);
+  }
+
+  .champion-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+  }
+
+  .champion-name {
+    font-family: var(--font-impact);
+    font-size: 1.6rem;
+    letter-spacing: 0.5px;
+  }
+
+  .champion-club {
+    color: var(--gold-light);
+    font-size: 0.95rem;
+  }
+
+  .trophy-drop {
+    font-size: clamp(4rem, 12vw, 6rem);
+    filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.7));
+    animation: trophyDrop 1s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+
+  @keyframes trophyDrop {
+    0% { transform: translateY(-260px) rotate(-25deg); opacity: 0; }
+    55% { transform: translateY(15px) rotate(10deg); opacity: 1; }
+    72% { transform: translateY(-10px) rotate(-5deg); }
+    86% { transform: translateY(5px) rotate(3deg); }
+    100% { transform: translateY(0) rotate(0deg); }
+  }
+
+  .recap-title {
+    margin-top: 0.6rem;
+    font-size: 0.95rem;
+    color: #cfc3ee;
+  }
+
+  .share-label {
+    margin-top: 0.6rem;
+    font-size: 0.9rem;
+    color: #cfc3ee;
+  }
+
+  .share-row {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .share-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.6rem 1.1rem;
+    border-radius: 30px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-light);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 215, 0, 0.25);
+    transition: transform 0.2s ease, background 0.2s ease;
+  }
+
+  .share-btn:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 215, 0, 0.15);
+  }
+
+  .share-toast {
+    min-height: 1.2rem;
+    font-size: 0.85rem;
+    color: var(--electric-blue);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+
+  .share-toast.is-visible {
+    opacity: 1;
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    max-width: 560px;
+  }
+
+  .chip {
+    background: rgba(0, 224, 255, 0.12);
+    border: 1px solid rgba(0, 224, 255, 0.4);
+    color: var(--electric-blue);
+    font-size: 0.8rem;
+    padding: 0.4rem 0.9rem;
+    border-radius: 20px;
+  }
+
+  .confetti-layer {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 40;
+  }
+
+  .confetti-piece {
+    position: absolute;
+    top: -20px;
+    width: 8px;
+    height: 14px;
+    border-radius: 2px;
+    animation: confettiFall linear forwards;
+  }
+
+  @keyframes confettiFall {
+    to { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 640px) {
+    .duel-stage {
+      flex-direction: column;
+    }
+
+    .duel-card {
+      max-width: 320px;
+      width: 100%;
+    }
+
+    .vs-badge {
+      order: 2;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="topbar-title">⚽ LE BALLON D'OR DU PEUPLE</span>
+  <button id="soundToggle" class="sound-toggle" onclick="toggleSound()" aria-label="Couper le son">🔊</button>
+</div>
+
+<main id="app"></main>
+
+<script>
+  /* ============ Données joueurs ============ */
+  const PLAYERS = [
+    { name: "Lamine Yamal", club: "FC Barcelone", wiki: "Lamine Yamal" },
+    { name: "Kylian Mbappé", club: "Real Madrid", wiki: "Kylian Mbappé" },
+    { name: "Lionel Messi", club: "Inter Miami", wiki: "Lionel Messi" },
+    { name: "Harry Kane", club: "Bayern Munich", wiki: "Harry Kane" },
+    { name: "Rodri", club: "Manchester City", wiki: "Rodri (footballer, born 1996)" },
+    { name: "Jude Bellingham", club: "Real Madrid", wiki: "Jude Bellingham" },
+    { name: "Vinicius Jr", club: "Real Madrid", wiki: "Vinícius Júnior" },
+    { name: "Ousmane Dembélé", club: "PSG", wiki: "Ousmane Dembélé" },
+    { name: "Erling Haaland", club: "Manchester City", wiki: "Erling Haaland" },
+    { name: "Pedri", club: "FC Barcelone", wiki: "Pedri" },
+    { name: "Michael Olise", club: "Bayern Munich", wiki: "Michael Olise" },
+    { name: "Florian Wirtz", club: "Liverpool", wiki: "Florian Wirtz" },
+    { name: "Achraf Hakimi", club: "PSG", wiki: "Achraf Hakimi" },
+    { name: "Cole Palmer", club: "Chelsea", wiki: "Cole Palmer" },
+    { name: "Khvicha Kvaratskhelia", club: "PSG", wiki: "Khvicha Kvaratskhelia" },
+    { name: "Lautaro Martínez", club: "Inter Milan", wiki: "Lautaro Martínez" },
+    { name: "Fabián Ruiz", club: "PSG", wiki: "Fabián Ruiz" },
+    { name: "Mikel Oyarzabal", club: "Real Sociedad", wiki: "Mikel Oyarzabal" },
+    { name: "Désiré Doué", club: "PSG", wiki: "Désiré Doué" },
+    { name: "Raphinha", club: "FC Barcelone", wiki: "Raphinha" }
+  ];
+
+  const LS_GLOBAL_STATS = "ballonDor_globalStats";
+  const LS_SOUND_MUTED = "ballonDor_soundMuted";
+
+  const app = document.getElementById("app");
+
+  /* ============ Audio ============ */
+  let audioCtx = null;
+  let soundMuted = localStorage.getItem(LS_SOUND_MUTED) === "1";
+
+  function getAudioCtx() {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === "suspended") audioCtx.resume();
+    return audioCtx;
+  }
+
+  function playTone({ freq, duration = 0.15, type = "sine", volume = 0.2, delay = 0, glideTo = null }) {
+    if (soundMuted) return;
+    try {
+      const ctx = getAudioCtx();
+      const t0 = ctx.currentTime + delay;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, t0);
+      if (glideTo) osc.frequency.linearRampToValueAtTime(glideTo, t0 + duration);
+      gain.gain.setValueAtTime(0, t0);
+      gain.gain.linearRampToValueAtTime(volume, t0 + 0.015);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t0 + duration);
+      osc.connect(gain).connect(ctx.destination);
+      osc.start(t0);
+      osc.stop(t0 + duration + 0.05);
+    } catch (e) {}
+  }
+
+  function playChoiceSound() {
+    playTone({ freq: 480, glideTo: 720, duration: 0.16, type: "triangle", volume: 0.22 });
+  }
+
+  function playWhoosh() {
+    playTone({ freq: 300, glideTo: 90, duration: 0.22, type: "sawtooth", volume: 0.08 });
+  }
+
+  function playButtonSound() {
+    playTone({ freq: 392, duration: 0.1, type: "square", volume: 0.15 });
+    playTone({ freq: 587, duration: 0.12, type: "square", volume: 0.12, delay: 0.05 });
+  }
+
+  function playFanfare() {
+    [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => {
+      playTone({ freq: f, duration: 0.35, type: "triangle", volume: 0.22, delay: i * 0.13 });
+    });
+  }
+
+  function toggleSound() {
+    soundMuted = !soundMuted;
+    localStorage.setItem(LS_SOUND_MUTED, soundMuted ? "1" : "0");
+    updateSoundToggleUI();
+    if (!soundMuted) {
+      getAudioCtx();
+      playButtonSound();
+    }
+  }
+
+  function updateSoundToggleUI() {
+    const btn = document.getElementById("soundToggle");
+    if (!btn) return;
+    btn.textContent = soundMuted ? "🔇" : "🔊";
+    btn.setAttribute("aria-label", soundMuted ? "Activer le son" : "Couper le son");
+  }
+
+  /* ============ Utilitaires ============ */
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function findPlayerByName(name) {
+    return PLAYERS.find(p => p.name === name);
+  }
+
+  function fallbackAvatarUrl(name) {
+    const initials = name.split(" ").map(w => w[0]).slice(0, 2).join("");
+    return `https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&background=1c1246&color=FFD700&size=400&bold=true&font-size=0.4`;
+  }
+
+  function bumpGlobalStats(name) {
+    const stats = JSON.parse(localStorage.getItem(LS_GLOBAL_STATS) || "{}");
+    stats[name] = (stats[name] || 0) + 1;
+    localStorage.setItem(LS_GLOBAL_STATS, JSON.stringify(stats));
+  }
+
+  /* ============ Résolution des photos via l'API Wikipedia ============ */
+  async function fetchWikiImage(title) {
+    try {
+      const res = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title)}`);
+      if (!res.ok) return null;
+      const data = await res.json();
+      if (data.type === "disambiguation") return null;
+      if (data.thumbnail && data.thumbnail.source) {
+        return data.thumbnail.source.replace(/\/\d+px-/, "/500px-");
+      }
+      return null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  async function searchWikiTitle(query) {
+    try {
+      const res = await fetch(`https://en.wikipedia.org/w/api.php?action=opensearch&search=${encodeURIComponent(query)}&limit=1&namespace=0&format=json&origin=*`);
+      if (!res.ok) return null;
+      const data = await res.json();
+      return (data[1] && data[1][0]) ? data[1][0] : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  async function resolvePlayerImages() {
+    await Promise.all(PLAYERS.map(async (p) => {
+      let url = await fetchWikiImage(p.wiki);
+      if (!url) {
+        const foundTitle = await searchWikiTitle(p.name + " footballer");
+        if (foundTitle) url = await fetchWikiImage(foundTitle);
+      }
+      p.img = url || fallbackAvatarUrl(p.name);
+    }));
+  }
+
+  /* ============ Etat du jeu ============ */
+  let game = null;
+
+  function startNewGame() {
+    playButtonSound();
+    const pool = shuffle(PLAYERS);
+    const a = pool.shift();
+    const b = pool.shift();
+    game = {
+      mode: "main",
+      duelIndex: 1,
+      current: { a, b },
+      queue: pool.slice(0, 9),
+      winCounts: {},
+      winsAgainst: {},
+      tiebreak: null,
+      locked: false
+    };
+    renderDuelScreen(true);
+  }
+
+  function choose(side) {
+    if (!game || game.locked) return;
+    game.locked = true;
+    playChoiceSound();
+
+    const winner = game.current[side];
+    const loser = game.current[side === "a" ? "b" : "a"];
+
+    game.winCounts[winner.name] = (game.winCounts[winner.name] || 0) + 1;
+    if (!game.winsAgainst[winner.name]) game.winsAgainst[winner.name] = [];
+    game.winsAgainst[winner.name].push(loser);
+    bumpGlobalStats(winner.name);
+
+    playChoiceAnimation(side, () => proceedAfterChoice(winner));
+  }
+
+  function playChoiceAnimation(side, callback) {
+    const stage = document.getElementById("duelStage");
+    if (!stage) { callback(); return; }
+    const chosenCard = stage.querySelector(`.duel-card[data-side="${side}"]`);
+    const otherSide = side === "a" ? "b" : "a";
+    const otherCard = stage.querySelector(`.duel-card[data-side="${otherSide}"]`);
+    if (chosenCard) chosenCard.classList.add("is-chosen");
+    if (otherCard) otherCard.classList.add("is-defeated");
+
+    setTimeout(() => {
+      stage.classList.add("stage-exit");
+      playWhoosh();
+      setTimeout(callback, 280);
+    }, 550);
+  }
+
+  function proceedAfterChoice(winner) {
+    if (game.mode === "main") {
+      if (game.duelIndex >= 10) {
+        evaluateWinnerOrTiebreak();
+        return;
+      }
+      game.duelIndex++;
+      const challenger = game.queue.shift();
+      game.current = { a: winner, b: challenger };
+      game.locked = false;
+      renderDuelScreen(false);
+    } else {
+      const tb = game.tiebreak;
+      tb.roundWinners.push(winner);
+      tb.pairIndex++;
+      if (tb.pairIndex < tb.pairsThisRound.length) {
+        game.current = tb.pairsThisRound[tb.pairIndex];
+        game.locked = false;
+        renderDuelScreen(false);
+      } else {
+        let nextContenders = tb.roundWinners.slice();
+        if (tb.bye) nextContenders.push(tb.bye);
+        if (nextContenders.length === 1) {
+          finishGame(nextContenders[0]);
+        } else {
+          setupTiebreakRound(nextContenders, tb.round + 1);
+        }
+      }
+    }
+  }
+
+  function evaluateWinnerOrTiebreak() {
+    const counts = game.winCounts;
+    const max = Math.max(...Object.values(counts));
+    const topNames = Object.keys(counts).filter(n => counts[n] === max);
+    if (topNames.length === 1) {
+      finishGame(findPlayerByName(topNames[0]));
+    } else {
+      setupTiebreakRound(topNames.map(findPlayerByName), 1);
+    }
+  }
+
+  function setupTiebreakRound(contenders, round) {
+    const shuffled = shuffle(contenders);
+    let bye = null;
+    if (shuffled.length % 2 === 1) bye = shuffled.pop();
+    const pairs = [];
+    for (let i = 0; i < shuffled.length; i += 2) {
+      pairs.push({ a: shuffled[i], b: shuffled[i + 1] });
+    }
+    game.mode = "tiebreak";
+    game.tiebreak = { round, pairsThisRound: pairs, pairIndex: 0, roundWinners: [], bye };
+    game.current = pairs[0];
+    game.locked = false;
+    renderDuelScreen(true);
+  }
+
+  function finishGame(champion) {
+    const wins = (game.winsAgainst[champion.name] || []).map(p => ({ name: p.name, club: p.club }));
+    const result = {
+      name: champion.name,
+      club: champion.club,
+      img: champion.img,
+      wins
+    };
+    playFanfare();
+    renderFinalScreen(result);
+  }
+
+  /* ============ Rendu ============ */
+  function cardTemplate(player, side) {
+    return `
+      <div class="duel-card" data-side="${side}" role="button" tabindex="0"
+           onclick="choose('${side}')"
+           onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();choose('${side}');}"
+           aria-label="Choisir ${player.name}">
+        <div class="card-photo-wrap">
+          <img class="card-photo" src="${player.img}" alt="${player.name}"
+               onerror="this.onerror=null;this.src='${fallbackAvatarUrl(player.name)}';">
+        </div>
+        <div class="card-name">${player.name}</div>
+        <div class="card-club">${player.club}</div>
+      </div>
+    `;
+  }
+
+  function renderDuelScreen(fresh) {
+    const { a, b } = game.current;
+    const isMain = game.mode === "main";
+    const label = isMain
+      ? `DUEL ${game.duelIndex}/10`
+      : `DUEL BONUS${game.tiebreak.round > 1 ? " — TOUR " + game.tiebreak.round : ""}`;
+    const percent = isMain ? (game.duelIndex / 10) * 100 : 100;
+
+    app.innerHTML = `
+      <div class="progress-wrap">
+        <div class="progress-label">${label}</div>
+        <div class="progress-bar"><div class="progress-fill" style="width:${percent}%"></div></div>
+      </div>
+      <div class="duel-stage stage-enter" id="duelStage">
+        ${cardTemplate(a, "a")}
+        <div class="vs-badge">VS</div>
+        ${cardTemplate(b, "b")}
+      </div>
+    `;
+  }
+
+  function recapChips(wins) {
+    if (!wins.length) return "";
+    return `
+      <p class="recap-title">A battu, au fil de son parcours :</p>
+      <div class="chips">${wins.map(w => `<span class="chip">${w.name}</span>`).join("")}</div>
+    `;
+  }
+
+  let currentResult = null;
+
+  function shareOn(platform) {
+    if (!currentResult) return;
+    playButtonSound();
+    const year = new Date().getFullYear();
+    const text = `Pour moi, ${currentResult.name} (${currentResult.club}) est LE vrai Ballon d'Or ${year} ! 🏆⚽ Fais ton choix toi aussi :`;
+    const url = window.location.href;
+    if (platform === "fb") {
+      window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(text)}`, "_blank", "noopener,width=600,height=500");
+    } else if (platform === "tw") {
+      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, "_blank", "noopener,width=600,height=500");
+    } else if (platform === "ig") {
+      copyShareText(`${text} ${url}`);
+    }
+  }
+
+  async function copyShareText(full) {
+    try {
+      await navigator.clipboard.writeText(full);
+      showShareToast("Texte copié ! Colle-le dans ta story ou ta bio Instagram 📋");
+    } catch (e) {
+      showShareToast("Copie impossible — sélectionne le texte manuellement.");
+    }
+  }
+
+  function showShareToast(msg) {
+    const el = document.getElementById("shareToast");
+    if (!el) return;
+    el.textContent = msg;
+    el.classList.add("is-visible");
+    clearTimeout(showShareToast._t);
+    showShareToast._t = setTimeout(() => el.classList.remove("is-visible"), 3200);
+  }
+
+  function renderFinalScreen(result) {
+    currentResult = result;
+    app.innerHTML = `
+      <div class="confetti-layer" id="confettiLayer"></div>
+      <div class="final-screen">
+        <div class="trophy-drop">🏆</div>
+        <div class="champion-card">
+          <div class="champion-photo-wrap">
+            <img class="champion-photo" src="${result.img}" alt="${result.name}"
+                 onerror="this.onerror=null;this.src='${fallbackAvatarUrl(result.name)}';">
+          </div>
+          <div class="champion-name">${result.name}</div>
+          <div class="champion-club">${result.club}</div>
+        </div>
+        <h2 class="final-title">BALLON D'OR ${new Date().getFullYear()}</h2>
+        ${recapChips(result.wins)}
+        <p class="share-label">Partage ton résultat :</p>
+        <div class="share-row">
+          <button class="share-btn" onclick="shareOn('fb')" aria-label="Partager sur Facebook">📘 Facebook</button>
+          <button class="share-btn" onclick="shareOn('tw')" aria-label="Partager sur Twitter/X">✖️ Twitter/X</button>
+          <button class="share-btn" onclick="shareOn('ig')" aria-label="Copier pour Instagram">📸 Instagram</button>
+        </div>
+        <p class="share-toast" id="shareToast"></p>
+        <button class="btn-replay" onclick="startNewGame()">🔁 REJOUER</button>
+      </div>
+    `;
+    spawnConfetti();
+  }
+
+  function renderLoadingScreen() {
+    app.innerHTML = `
+      <div class="loading-screen">
+        <div class="loading-spinner"></div>
+        <p>Récupération des photos des joueurs…</p>
+      </div>
+    `;
+  }
+
+  function introPhotoBgTemplate() {
+    return shuffle(PLAYERS)
+      .map(p => `<img src="${p.img}" alt="" loading="lazy">`)
+      .join("");
+  }
+
+  function renderIntroScreen() {
+    app.innerHTML = `
+      <div class="intro-photo-bg">${introPhotoBgTemplate()}</div>
+      <div class="intro-screen">
+        <div class="intro-trophy">🏆</div>
+        <h1 class="intro-title">LE BALLON D'OR<br>DU PEUPLE</h1>
+        <p class="intro-subtitle">
+          Le classement officieux (mais totalement légitime) du meilleur joueur du moment,
+          après la Coupe du Monde 2026.
+        </p>
+        <p class="intro-rules">
+          20 stars, 10 duels façon « roi de la colline » : le gagnant reste en jeu face à un
+          nouveau challenger à chaque tour. Clique sur ton favori. Celui qui enchaîne le plus
+          de victoires remporte le titre — égalité départagée par un duel bonus.
+        </p>
+        <button class="btn-start" onclick="startNewGame()">COMMENCER</button>
+      </div>
+    `;
+  }
+
+  function spawnConfetti() {
+    const layer = document.getElementById("confettiLayer");
+    if (!layer) return;
+    const colors = ["#ffd700", "#fff3b0", "#b8860b", "#00e0ff", "#6c1cd1"];
+    for (let i = 0; i < 50; i++) {
+      const piece = document.createElement("span");
+      piece.className = "confetti-piece";
+      piece.style.left = Math.random() * 100 + "%";
+      piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+      const duration = 2.5 + Math.random() * 2.5;
+      piece.style.animationDuration = duration + "s";
+      piece.style.animationDelay = Math.random() * 0.7 + "s";
+      piece.style.transform = `rotate(${Math.random() * 360}deg)`;
+      layer.appendChild(piece);
+      setTimeout(() => piece.remove(), (duration + 1) * 1000);
+    }
+  }
+
+  /* ============ Démarrage ============ */
+  async function init() {
+    updateSoundToggleUI();
+    renderLoadingScreen();
+    await resolvePlayerImages();
+    renderIntroScreen();
+  }
+
+  init();
+</script>
+
+</body>
+</html>
