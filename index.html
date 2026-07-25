@@ -41,6 +41,7 @@
     background-size: 200% 200%;
     animation: bgShift 18s ease infinite;
     min-height: 100vh;
+    min-height: 100dvh;
     overflow-x: hidden;
   }
 
@@ -113,6 +114,7 @@
     margin: 0 auto;
     padding: 2rem 1.2rem 4rem;
     min-height: calc(100vh - 68px);
+    min-height: calc(100dvh - 68px);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -432,6 +434,7 @@
     aspect-ratio: 1 / 1;
     border-radius: 18px;
     overflow: hidden;
+    background: #100a28;
     border: 2px solid rgba(255, 215, 0, 0.4);
   }
 
@@ -561,17 +564,31 @@
   }
 
   @media (max-width: 640px) {
+    .topbar {
+      padding: 0.7rem 1rem;
+    }
+
+    main {
+      padding: 1.2rem 1rem 2rem;
+    }
+
+    .intro-screen {
+      gap: 0.9rem;
+    }
+
+    .intro-rules {
+      padding: 0.8rem 1.1rem;
+    }
+
     .duel-stage {
       flex-direction: column;
+      gap: 0.9rem;
     }
 
     .duel-card {
       max-width: 320px;
       width: 100%;
-    }
-
-    .vs-badge {
-      order: 2;
+      padding: 0.8rem;
     }
   }
 
