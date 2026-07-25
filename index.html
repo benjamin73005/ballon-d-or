@@ -728,10 +728,6 @@
     return a;
   }
 
-  function findPlayerByName(name) {
-    return PLAYERS.find(p => p.name === name);
-  }
-
   function fallbackAvatarUrl(name) {
     const initials = name.split(" ").map(w => w[0]).slice(0, 2).join("");
     return `https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&background=1c1246&color=FFD700&size=400&bold=true&font-size=0.4`;
@@ -790,13 +786,10 @@
     const a = pool.shift();
     const b = pool.shift();
     game = {
-      mode: "main",
       duelIndex: 1,
       current: { a, b },
       queue: pool.slice(0, 9),
-      winCounts: {},
       winsAgainst: {},
-      tiebreak: null,
       locked: false
     };
     renderDuelScreen(true);
@@ -810,7 +803,6 @@
     const winner = game.current[side];
     const loser = game.current[side === "a" ? "b" : "a"];
 
-    game.winCounts[winner.name] = (game.winCounts[winner.name] || 0) + 1;
     if (!game.winsAgainst[winner.name]) game.winsAgainst[winner.name] = [];
     game.winsAgainst[winner.name].push(loser);
     bumpGlobalStats(winner.name);
@@ -835,60 +827,15 @@
   }
 
   function proceedAfterChoice(winner) {
-    if (game.mode === "main") {
-      if (game.duelIndex >= 10) {
-        evaluateWinnerOrTiebreak();
-        return;
-      }
-      game.duelIndex++;
-      const challenger = game.queue.shift();
-      game.current = { a: winner, b: challenger };
-      game.locked = false;
-      renderDuelScreen(false);
-    } else {
-      const tb = game.tiebreak;
-      tb.roundWinners.push(winner);
-      tb.pairIndex++;
-      if (tb.pairIndex < tb.pairsThisRound.length) {
-        game.current = tb.pairsThisRound[tb.pairIndex];
-        game.locked = false;
-        renderDuelScreen(false);
-      } else {
-        let nextContenders = tb.roundWinners.slice();
-        if (tb.bye) nextContenders.push(tb.bye);
-        if (nextContenders.length === 1) {
-          finishGame(nextContenders[0]);
-        } else {
-          setupTiebreakRound(nextContenders, tb.round + 1);
-        }
-      }
+    if (game.duelIndex >= 10) {
+      finishGame(winner);
+      return;
     }
-  }
-
-  function evaluateWinnerOrTiebreak() {
-    const counts = game.winCounts;
-    const max = Math.max(...Object.values(counts));
-    const topNames = Object.keys(counts).filter(n => counts[n] === max);
-    if (topNames.length === 1) {
-      finishGame(findPlayerByName(topNames[0]));
-    } else {
-      setupTiebreakRound(topNames.map(findPlayerByName), 1);
-    }
-  }
-
-  function setupTiebreakRound(contenders, round) {
-    const shuffled = shuffle(contenders);
-    let bye = null;
-    if (shuffled.length % 2 === 1) bye = shuffled.pop();
-    const pairs = [];
-    for (let i = 0; i < shuffled.length; i += 2) {
-      pairs.push({ a: shuffled[i], b: shuffled[i + 1] });
-    }
-    game.mode = "tiebreak";
-    game.tiebreak = { round, pairsThisRound: pairs, pairIndex: 0, roundWinners: [], bye };
-    game.current = pairs[0];
+    game.duelIndex++;
+    const challenger = game.queue.shift();
+    game.current = { a: winner, b: challenger };
     game.locked = false;
-    renderDuelScreen(true);
+    renderDuelScreen(false);
   }
 
   function finishGame(champion) {
@@ -922,11 +869,8 @@
 
   function renderDuelScreen(fresh) {
     const { a, b } = game.current;
-    const isMain = game.mode === "main";
-    const label = isMain
-      ? `DUEL ${game.duelIndex}/10`
-      : `DUEL BONUS${game.tiebreak.round > 1 ? " — TOUR " + game.tiebreak.round : ""}`;
-    const percent = isMain ? (game.duelIndex / 10) * 100 : 100;
+    const label = `DUEL ${game.duelIndex}/10`;
+    const percent = (game.duelIndex / 10) * 100;
 
     app.innerHTML = `
       <div class="progress-wrap">
@@ -1040,8 +984,8 @@
         </p>
         <p class="intro-rules">
           20 stars, 10 duels façon « roi de la colline » : le gagnant reste en jeu face à un
-          nouveau challenger à chaque tour. Clique sur ton favori. Celui qui enchaîne le plus
-          de victoires remporte le titre — égalité départagée par un duel bonus.
+          nouveau challenger à chaque tour. Clique sur ton favori. Celui qui remporte le
+          10ᵉ et dernier duel devient LE Ballon d'Or.
         </p>
         <button class="btn-start" onclick="startNewGame()">COMMENCER</button>
       </div>
