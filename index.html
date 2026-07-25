@@ -565,11 +565,11 @@
 
   @media (max-width: 640px) {
     .topbar {
-      padding: 0.7rem 1rem;
+      padding: 0.6rem 1rem;
     }
 
     main {
-      padding: 1.2rem 1rem 2rem;
+      padding: 1rem 1rem 1.2rem;
     }
 
     .intro-screen {
@@ -580,15 +580,28 @@
       padding: 0.8rem 1.1rem;
     }
 
+    .progress-wrap {
+      margin-bottom: 1.2rem;
+    }
+
     .duel-stage {
       flex-direction: column;
-      gap: 0.9rem;
+      gap: 0.6rem;
     }
 
     .duel-card {
-      max-width: 320px;
-      width: 100%;
-      padding: 0.8rem;
+      width: auto;
+      max-width: none;
+      padding: 0.6rem;
+      gap: 0.4rem;
+    }
+
+    .card-photo-wrap {
+      width: clamp(90px, min(42vw, 18dvh), 220px);
+    }
+
+    .vs-badge {
+      font-size: clamp(1.3rem, 4vw, 1.8rem);
     }
   }
 
